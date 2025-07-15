@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
+use PhpParser\Node\Stmt\Return_;
 
 class AdminController extends Controller
 {
@@ -34,7 +35,8 @@ class AdminController extends Controller
         }
 
         Admin::create($data);
-        return redirect('/admin/login')->with('success', 'Admin registered successfully');
+        // return redirect('/admin/login')->with('success', 'Admin registered successfully');
+        return "Admin registered successfully";
     }
 
     // show login page
