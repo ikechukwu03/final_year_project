@@ -4,7 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
-    return view('adminpage');
+    return view('admin.register');
+    return view('admin.login');
+    return view('admin.dashboard');
+    
 });
 
 // Admin Signup & Login Routes
@@ -14,4 +17,7 @@ Route::post('/admin/register', [AdminController::class, 'register']);
 Route::get('/admin/login', [AdminController::class, 'showLoginForm']);
 Route::post('/admin/login', [AdminController::class, 'login']);
 Route::post('/admin/logout', [AdminController::class, 'logout']);
+
+//handles everything about the admin
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
 

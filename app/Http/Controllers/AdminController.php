@@ -24,7 +24,11 @@ class AdminController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:admins',
             'password' => 'required|min:6',
+
+        ],[
+        'email.unique' => 'This email is already used by another Admin. Please try a different one.',
         ]);
+
 
         // Hash password before saving
         $data['password'] = Hash::make($data['password']);
@@ -35,8 +39,7 @@ class AdminController extends Controller
         }
 
         Admin::create($data);
-        // return redirect('/admin/login')->with('success', 'Admin registered successfully');
-        return "Admin registered successfully";
+        return redirect('/admin/login')->with('Registration successful! Please log in to continue.');
     }
 
     // show login page
@@ -69,4 +72,14 @@ class AdminController extends Controller
         session()->forget(['admin_logged_in', 'admin_id']);
         return redirect('/admin/login')->with('success', 'Logged out successfully');
     }
+
+
+    //admin dashboard
+    public function dashboard()
+    {
+        return view('admin.dashboard');
+    }
+
 }
+
+
