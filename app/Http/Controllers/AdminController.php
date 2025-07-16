@@ -24,7 +24,6 @@ class AdminController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:admins',
             'password' => 'required|min:6',
-
         ],[
         'email.unique' => 'This email is already used by another Admin. Please try a different one.',
         ]);
