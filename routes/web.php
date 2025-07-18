@@ -5,8 +5,6 @@ use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('admin.register');
-    return view('admin.login');
-    return view('admin.dashboard');
     
 });
 
@@ -14,10 +12,15 @@ Route::get('/', function () {
 Route::get('/admin/register', [AdminController::class, 'showRegisterForm']);
 Route::post('/admin/register', [AdminController::class, 'register']);
 
-Route::get('/admin/login', [AdminController::class, 'showLoginForm']);
+Route::get('/admin/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'login']);
 Route::post('/admin/logout', [AdminController::class, 'logout']);
 
-//handles everything about the admin
-Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+//handles admin dashboard
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+//handles everthing about the uploading of finalists
+Route::get('/admin/upload-finalists', [AdminController::class, 'showUploadForm']);
+Route::post('/admin/upload-finalists', [AdminController::class, 'uploadFinalists']);
+
 

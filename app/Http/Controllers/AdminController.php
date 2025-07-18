@@ -4,10 +4,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Admin;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Return_;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Finalist;
 
 class AdminController extends Controller
 {
@@ -38,7 +41,7 @@ class AdminController extends Controller
         }
 
         Admin::create($data);
-        return redirect('/admin/login')->with('Registration successful! Please log in to continue.');
+        return redirect('/admin/login')->with("success",'Registration successful! Please log in to continue.');
     }
 
     // show login page
@@ -78,6 +81,60 @@ class AdminController extends Controller
     {
         return view('admin.dashboard');
     }
+
+
+    // Show the upload form
+    public function showUploadForm()
+    {
+        return view('admin.upload_finalists');
+    }
+
+    // Handle the upload of CSV file
+    public function uploadFinalists(Request $request)
+    {
+        // Validate that a file is uploaded and it's a CSV
+        $request->validate([
+            'finalists_file' => 'required|mimes:csv,txt|max:2048',
+        ]);
+
+        // Get the uploaded file
+        $file = $request->file('finalists_file');
+
+        // Open and read the CSV file
+        if (($handle = fopen($file, 'r')) !== false) {
+            $header = fgetcsv($handle); // Get the first row as header
+
+            // Check for required columns
+            if (!in_array('name', $header) || !in_array('matric_number', $header) || !in_array('email', $header) || !in_array('graduation_year', $header)) {
+                return back()->with('error', 'CSV must have: name, matric_number, email, graduation_year');
+            }
+
+            // Loop through each row and insert into 'finalists' table
+            while (($row = fgetcsv($handle)) !== false) {
+                $data = array_combine($header, $row);
+
+                // Avoid duplicate entries
+                $exists = DB::table('finalists')->where('matric_number', $data['matric_number'])->exists();
+                if (!$exists) {
+                    DB::table('finalists')->insert([
+                        'name' => $data['name'],
+                        'matric_number' => $data['matric_number'],
+                        'email' => $data['email'],
+                        'graduation_year' => $data['graduation_year'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            }
+
+            fclose($handle);
+
+            return back()->with('success', 'Finalist list uploaded successfully.');
+        }
+
+        return back()->with('error', 'Failed to read file.');
+    }
+
 
 }
 

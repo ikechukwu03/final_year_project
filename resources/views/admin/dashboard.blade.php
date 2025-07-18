@@ -12,6 +12,7 @@
         <li><a href="/admin/pending-projects">📥 View Pending Project Submissions</a></li>
         <li><a href="/admin/approved-projects">✅ View Approved Projects</a></li>
     </ul>
+    @yield('content')
 
     <form method="POST" action="/admin/logout">
         @csrf
