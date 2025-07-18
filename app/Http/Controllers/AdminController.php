@@ -5,12 +5,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Project;
+use App\Models\Finalist;
+use App\Models\Submission;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Return_;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Finalist;
 
 class AdminController extends Controller
 {
@@ -134,6 +136,41 @@ class AdminController extends Controller
 
         return back()->with('error', 'Failed to read file.');
     }
+
+
+
+// Show all unapproved submissions
+public function pendingProjects() {
+    $submissions = Submission::with('finalist')->latest()->get();
+    return view('admin.pending_projects', compact('submissions'));
+}
+
+// Approve a project
+public function approveProject($id) {
+    $submission = Submission::findOrFail($id);
+
+    Project::create([
+        'finalist_id' => $submission->finalist_id,
+        'project_title' => $submission->project_title,
+        'project_file' => $submission->project_file,
+        'code_file' => $submission->code_file,
+        'abstract' => $submission->abstract,
+        'year' => $submission->finalist->graduation_year,
+    ]);
+
+    $submission->delete();
+
+    return back()->with('success', 'Project approved and moved to public archive.');
+}
+
+// Reject a project
+public function rejectProject($id) {
+    $submission = Submission::findOrFail($id);
+    $submission->delete();
+
+    return back()->with('error', 'Project rejected and deleted.');
+}
+
 
 
 }

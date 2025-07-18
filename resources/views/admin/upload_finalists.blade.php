@@ -1,4 +1,4 @@
-@extends('admin.dashboard') {{-- Use your layout if available --}}
+@extends('admin.dashboard')
 
 @section('content')
     <div style="padding: 20px;">

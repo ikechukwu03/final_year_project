@@ -24,3 +24,12 @@ Route::get('/admin/upload-finalists', [AdminController::class, 'showUploadForm']
 Route::post('/admin/upload-finalists', [AdminController::class, 'uploadFinalists']);
 
 
+
+
+// Admin Project Review Routes
+Route::get('/admin/pending-projects', [AdminController::class, 'pendingProjects'])->name('admin.pending');
+Route::post('/admin/approve-project/{id}', [AdminController::class, 'approveProject'])->name('admin.approve');
+Route::post('/admin/reject-project/{id}', [AdminController::class, 'rejectProject'])->name('admin.reject');
+
+
+
