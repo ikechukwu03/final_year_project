@@ -12,5 +12,11 @@ class Finalist extends Model
         'email',
         'graduation_year',
     ];
+
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
 }
 

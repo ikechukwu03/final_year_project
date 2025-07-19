@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('abstract')->nullable();
             $table->year('year'); // pull from finalist
             $table->timestamps();
+            $table->string('category')->nullable(); // optional for filtering
         });
     }
     

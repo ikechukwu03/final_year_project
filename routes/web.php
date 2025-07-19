@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProjectController;
 
 Route::get('/', function () {
     return view('admin.register');
@@ -30,6 +31,13 @@ Route::post('/admin/upload-finalists', [AdminController::class, 'uploadFinalists
 Route::get('/admin/pending-projects', [AdminController::class, 'pendingProjects'])->name('admin.pending');
 Route::post('/admin/approve-project/{id}', [AdminController::class, 'approveProject'])->name('admin.approve');
 Route::post('/admin/reject-project/{id}', [AdminController::class, 'rejectProject'])->name('admin.reject');
+
+
+// Public View
+Route::get('/projects', [ProjectController::class, 'publicProjects'])->name('projects.public');
+
+// Admin View
+Route::get('/admin/approved-projects', [ProjectController::class, 'adminApprovedProjects'])->name('admin.approved.projects');
 
 
 
