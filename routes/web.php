@@ -33,6 +33,7 @@ Route::post('/admin/approve-project/{id}', [AdminController::class, 'approveProj
 Route::post('/admin/reject-project/{id}', [AdminController::class, 'rejectProject'])->name('admin.reject');
 
 
+//Approved project
 // Public View
 Route::get('/projects', [ProjectController::class, 'publicProjects'])->name('projects.public');
 
