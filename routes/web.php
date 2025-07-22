@@ -9,6 +9,7 @@ Route::get('/', function () {
     
 });
 
+
 // Admin Signup & Login Routes
 Route::get('/admin/register', [AdminController::class, 'showRegisterForm']);
 Route::post('/admin/register', [AdminController::class, 'register']);
@@ -39,6 +40,5 @@ Route::get('/projects', [ProjectController::class, 'publicProjects'])->name('pro
 
 // Admin View
 Route::get('/admin/approved-projects', [ProjectController::class, 'adminApprovedProjects'])->name('admin.approved.projects');
-
 
 
