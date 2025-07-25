@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\StudentController;
 
 Route::get('/', function () {
     return view('admin.register');
@@ -36,9 +37,13 @@ Route::post('/admin/reject-project/{id}', [AdminController::class, 'rejectProjec
 
 //Approved project
 // Public View
-Route::get('/projects', [ProjectController::class, 'publicProjects'])->name('projects.public');
+Route::get('/projects/public', [ProjectController::class, 'publicProjects'])->name('projects.public');
 
 // Admin View
 Route::get('/admin/approved-projects', [ProjectController::class, 'adminApprovedProjects'])->name('admin.approved.projects');
 
 
+
+// Student signup
+Route::get('/student/register', [StudentController::class, 'showRegisterForm'])->name('student.register.form');
+Route::post('/student/register', [StudentController::class, 'register'])->name('student.register');
