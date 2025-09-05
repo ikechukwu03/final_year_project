@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
     
-    // ✅ Add these 2 new fields
+    //Add these 2 new fields
         $table->string('matric_number')->unique();
         $table->string('graduation_year');
 

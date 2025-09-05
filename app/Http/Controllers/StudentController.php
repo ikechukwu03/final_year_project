@@ -19,14 +19,16 @@ class StudentController extends Controller
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
-            'matric_no' => 'required|string',
+            'matric_number' => 'required|string',
+            'graduation_year' => 'required|string:9',
             'password' => 'required|string|min:6',
         ]);
 
-        // Check if student exists in finalists
-        $finalist = Finalist::where('name', $request->input ("name"))
-            ->where('email', $request->input ("email"))
-            ->where('matric_no', $request-> input ("matric_no"))
+        // Check if student exists in finalists (including graduation year)
+        $finalist = Finalist::where('name', $request->input("name"))
+            ->where('email', $request->input("email"))
+            ->where('matric_number', $request->input("matric_number"))
+            ->where('graduation_year', $request->input("graduation_year"))
             ->first();
 
         if (!$finalist) {
@@ -34,18 +36,19 @@ class StudentController extends Controller
         }
 
         // Check if user is already registered
-        if (User::where('email', $request->input ("email"))->orWhere('matric_no', $request->input("matric_no"))->exists()) {
+        if (User::where('email', $request->input("email"))->orWhere('matric_number', $request->input("matric_number"))->exists()) {
             return redirect()->back()->with('error', 'You have already registered.');
         }
 
         // Register user
         User::create([
-            'name' => $request->input ("name"),
-            'email' => $request->input ("email"),
-            'matric_no' => $request->input ("matric_no"),
-            'password' => Hash::make($request->input ("password")),
+            'name' => $request->input("name"),
+            'email' => $request->input("email"),
+            'matric_number' => $request->input("matric_number"),
+            'graduation_year' => $request->input("graduation_year"),
+            'password' => Hash::make($request->input("password")),
         ]);
 
         return redirect()->back()->with('success', 'Registration successful!');
     }
-} 
+}
