@@ -47,3 +47,14 @@ Route::get('/admin/approved-projects', [ProjectController::class, 'adminApproved
 // Student signup
 Route::get('/student/register', [StudentController::class, 'showRegisterForm'])->name('student.register.form');
 Route::post('/student/register', [StudentController::class, 'register'])->name('student.register');
+
+
+//Student login/logout
+Route::get('/student/login', [StudentController::class, 'showLoginForm'])->name('student.login');
+Route::post('/student/login', [StudentController::class, 'login'])->name('student.login.post');
+Route::post('/student/logout', [StudentController::class, 'logout'])->name('student.logout');
+
+
+// Dashboard
+Route::get('/student/dashboard', function () {
+    return view('student.dashboard'); })->name('student.dashboard');

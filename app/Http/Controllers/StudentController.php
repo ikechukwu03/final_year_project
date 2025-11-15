@@ -51,4 +51,41 @@ class StudentController extends Controller
 
         return redirect()->back()->with('success', 'Registration successful!');
     }
+
+
+    //student login/logout
+    public function showLoginForm()
+{
+    return view('student.loginPage');
+}
+
+public function login(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|string',
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+
+    if (!$user) {
+        return back()->with('error', 'No account found with this email.');
+    }
+
+    if (!\Hash::check($request->password, $user->password)) {
+        return back()->with('error', 'Incorrect password.');
+    }
+
+    auth()->login($user);
+
+    return redirect()->route('student.dashboard')->with('success', 'Login successful!');
+}
+
+public function logout()
+{
+    auth()->logout();
+    return redirect()->route('student.login')->with('success', 'Logged out successfully.');
+}
+
+
 }
